@@ -10,6 +10,17 @@ func main() {
 	makeCmd := flag.NewFlagSet("make", flag.ExitOnError)
 	listCmd := flag.NewFlagSet("list", flag.ExitOnError)
 
+	Usage := func() {
+		fmt.Fprintf(flag.CommandLine.Output(), "Usage of %s:\n", os.Args[0])
+		makeCmd.PrintDefaults()
+		listCmd.PrintDefaults()
+	}
+
+	if len(os.Args) < 2 {
+		Usage()
+		os.Exit(1)
+	}
+
 	switch os.Args[1] {
 	case "make":
 		makeCmd.Parse(os.Args[2:])
@@ -19,7 +30,7 @@ func main() {
 		listCmd.Parse(os.Args[2:])
 		fmt.Println("Listing templates...")
 	default:
-		flag.PrintDefaults()
+		Usage()
 		os.Exit(1)
 	}
 }
